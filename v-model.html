@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="text" id="model">
+    <span></span>
+    <script>
+        let Dep = {
+            sub: [],
+            listener: (fn) => {
+
+            }
+        }
+        let obj = {
+            data: 'data原始数据',
+            age: 18
+        };
+
+
+        function defineReactive(obj, key, val) {
+            Object.defineProperty(obj, key, {
+                get() {
+                    console.log(`${key}被访问了`);
+                    return val
+                },
+                set(newVal) {
+                    if (newVal === val) return
+                    console.log("执行更新视图操作");
+                }
+            })
+        }
+
+        // 观测者
+        class Observer {
+            constructor(value) {
+                if (!value || (typeof value !== 'object')) {
+                    return
+                } else {
+                    this.walk(value)
+                }
+            }
+            walk(obj) {
+                Object.keys(obj).forEach(key => {
+                    defineReactive(obj, key, obj[key]);
+                })
+            }
+        }
+        new Observer(obj);
+    </script>
+</body>
+
+</html>
