@@ -25,6 +25,9 @@
 
 
         function defineReactive(obj, key, val) {
+            // 由于对象中可能嵌套着对象,所以需要对这个可能嵌套的对象进行观测
+            // 深度箭头
+            new Observer(val);
             Object.defineProperty(obj, key, {
                 get() {
                     console.log(`${key}被访问了`);
@@ -52,7 +55,7 @@
                 })
             }
         }
-        new Observer(obj);
+        // new Observer(obj);
     </script>
 </body>
 

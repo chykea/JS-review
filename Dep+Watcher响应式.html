@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="text" id="model">
+    <span></span>
+    <script>
+        let obj = {
+            data: 'data原始数据',
+            age: 18
+        };
+
+
+
+
+        // 观测者
+        class Observer {
+            constructor(value) {
+                if (!value || (typeof value !== 'object')) {
+                    return
+                } else {
+                    this.walk(value)
+                }
+            }
+            walk(obj) {
+                Object.keys(obj).forEach(key => {
+                    defineReactive(obj, key, obj[key]);
+                })
+            }
+        }
+        function defineReactive(obj, key, val) {
+            const dep = new Dep()
+            Object.defineProperty(obj, key, {
+                get() {
+                    // console.log(`${key}被获取了`);
+                    // 收集依赖
+                    dep.depend()
+                    return val
+                },
+                set(newVal) {
+                    if (newVal === val) return
+                    console.log("执行更新视图操作");
+                    dep.notify()
+                }
+            })
+        }
+        // 在vue中,如果数据没有被用到,并不需要去对其进行响应式监听
+        // 所以就需要收集依赖,通过Dep+Watcher进行依赖收集(发布订阅模式)
+        // 被Observer观测的data在触发getter时,Dep就会收集依赖,然后打上标记,这里就是标记为Dep.target
+        class Dep {
+            constructor() {
+                this.sub = []
+            }
+            // 添加一个Watcher对象
+            addSub(sub) {
+                this.sub.push(sub)
+            }
+            // 依赖收集
+            depend() {
+                if (Dep.target) {
+                    Dep.target.addDep(this)
+                }
+            }
+            // 通知所有watcher对象更新视图
+            notify() {
+                this.sub.forEach(item => {
+                    item.update()
+                })
+            }
+        }
+        // 
+        class Watcher {
+            constructor() {
+                Dep.target = this;
+            }
+            update() {
+                console.log('更新视图');
+            }
+            addDep(dep) {
+                dep.addSub(this)
+            }
+        }
+
+
+
+        class Vue {
+            constructor(option) {
+                this._data = option.data;
+                new Observer(this._data);
+                new Watcher(); // Dep.target = watcher
+                // 因为这里模拟在页面渲染了这个数据,所以watcher能够观察到并进行响应式更新
+                console.log('render data.test', this._data.test);
+            }
+        }
+        let o = new Vue({
+            data: {
+                test: 'new Vue',
+                age: 18
+            }
+        })
+    </script>
+</body>
+
+</html>
