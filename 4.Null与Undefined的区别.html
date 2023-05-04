@@ -10,19 +10,25 @@
 
 <body>
     <script>
-        // null与undefined是否相当?
-        console.log(null === undefined); // false
-        console.log(null == undefined); // true
-        // 拓展 == 与 === 的区别?
+
         /*
-            在 == 进行判断时,js会进行类型转换
-            ===用于严格判断,只要类型不匹配就返回false
+            undefined: 表示一个变量没有定义或定义了没有被赋值(未初始化)
+                       在函数有定义参数而没有传参的时候,对应的参数值为undefined
+                       函数的返回值默认是undefined
+
+            null: 表示什么都没有,表示"空值"
+                  在函数传参时,表示这个参数不是一个对象
+                  作为原型链的终点
+
+            一些明区别:用typeof undefined 会得到undefined
+                       而 type null 能得到object,
+                       这个是因为在 JS 的最初版本中，使用的是 32 位系统，
+                       为了性能考虑使用低位存储了变量的类型信息，000 开头代表是对象，然而 null 表示为全零，所以将它错误的判断为 object 。
+                    
+                       在类型转换中,将它们转为数字的时候
+                        Number(undefined) 会得到NaN
+                        Number(null) 会得到0
         */
-        /*
-            在== 判断时,null与undefined
-        */
-        console.log(Number(undefined)); // NaN
-        console.log(Number(null)); // 0
 
     </script>
 </body>
