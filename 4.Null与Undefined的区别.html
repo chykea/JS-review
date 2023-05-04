@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // null与undefined是否相当?
+        console.log(null === undefined); // false
+        console.log(null == undefined); // true
+        // 拓展 == 与 === 的区别?
+        /*
+            在 == 进行判断时,js会进行类型转换
+            ===用于严格判断,只要类型不匹配就返回false
+        */
+        /*
+            在== 判断时,null与undefined
+        */
+        console.log(Number(undefined)); // NaN
+        console.log(Number(null)); // 0
+
+    </script>
+</body>
+
+</html>
