@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="parent" style="width: 100px;height: 100px;background-color: aquamarine;">
+        <div id="son" style="width: 50px;height: 50px;background-color: pink;">
+            <div id="grandson" style="width: 25px;height: 25px;background-color: blueviolet;"></div>
+        </div>
+    </div>
+
+    <script>
+        let parent = document.querySelector('#parent')
+        let son = document.querySelector('#son')
+        let grandson = document.querySelector('#grandson')
+        parent.addEventListener('click', function (e) {
+            // console.log(e.target); // 触发事件的target
+            // console.log(e.currentTarget);// 事件所绑定的target
+            console.log('parent click in ');
+        }, true)
+        son.addEventListener('click', function (e) {
+            console.log('son click in ');
+        }, true)
+        grandson.addEventListener('click', function (e) {
+            console.log('grandson click in ');
+        }, true)
+        /*
+
+            要了解什么是事件模型,必不可少的前置知识
+            - 事件
+                HTML事件就是发生在HTML元素上的事情
+                当在HTML中使用javaScript时，javaScript能够应对这些事件
+                常见的事件
+                    - onclick
+                    - onmousedown
+                    - onkeydown
+                    ...
+
+            - 事件流
+                事件流理解为从页面接收事件的顺序,这些事件连起来就形成了一个像液体一样的整体
+                这个整体中的事件又有着自己的执行顺序,这就是事件流
+
+                而在事件流中有两个模型
+                - 事件冒泡
+                - 事件捕获
+
+                    以如下结构来讲
+                    <div id="parent" style="width: 100px;height: 100px;background-color: aquamarine;">
+                        <div id="son" style="width: 50px;height: 50px;background-color: pink;">
+                            <div id="grandson" style="width: 25px;height: 25px;background-color: blueviolet;"></div>
+                        </div>
+                    </div>
+
+                    事件冒泡
+                    比如,这三个div都绑定了click事件,点击grandson这个div,会依次触发 grandson -> son -> parent的click事件
+
+                    事件捕获
+                    当parent绑定了一个click事件,当这个点击事件被触发时,事件会这个parent这个节点依次传到他的子孙节点
+                    这里的触发过程是  parent -> son -> grandson
+
+
+                    后来ESMA 制定了标准,先捕获再冒泡
+                    现在整合后的标准事件流就有了三个阶段:
+                        1. 事件捕获阶段（目标在捕获阶段不接收事件）
+                        2. 目标阶段 （事件的执行阶段，此阶段会被归入冒泡阶段）
+                        3. 事件冒泡阶段 （事件传回Dom根节点）
+                    
+                    addEventListener() 方法用于向指定元素添加事件句柄。
+                        主要有三个参数,
+                        第一个参数指定事件的类型(必须)
+                        第二个参数指定事件触发后执行的函数(必须)
+                        第三个参数指定事件在冒泡阶段或捕获阶段执行,默认值为false,即在冒泡阶段执行(可选)
+
+                    e.stopPropagation() 方法防止调用相同事件的传播。
+                    不仅可以阻止事件冒泡,也可以阻止事件捕获
+
+
+                    事件委托(事件代理)
+                        由于内层子元素触发事件后会冒泡到外层元素,所以可以通过在外层元素添加事件监听,当内层元素触发事件后
+                        外层事件指向对应事件,这就是事件委托
+
+                        优点:
+                            提高性能:每一个函数都会占用内存空间，只需添加一个事件处理程序代理所有事件，所占用的内存空间更少。
+                            动态监听:使用事件委托可以自动绑定动态添加的元素，即新增的节点不需要主动添加也可以一样具有和其他元素一样的事件。
+
+        */
+
+    </script>
+</body>
+
+</html>
