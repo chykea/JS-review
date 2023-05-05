@@ -114,7 +114,7 @@
                         加号运算符转换规则(重要)
                             当A和B为{number,boolean,undefined,null}其中的一种,且A与B的类型不一致,会转换为number后进行运算
                             当A或B其中一个为string,另一个为{number,boolean,undefined,null}时,会对不为string的值进行to String转换,
-                            当A或B为对象时,会对对象进行to Primitive转换,然后进行拼接
+                            当A或B为对象时,会对对象进行to Primitive转换,然后进行字符串拼接
 
                             值得一提的是, 在加性运算符 +的隐式类型转换当中, 类型转换的顺序是从左到右进行的, 先进行类型转换然后再相加
                             示例: undefined + null + "1"+ []
