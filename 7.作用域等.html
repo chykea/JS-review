@@ -58,17 +58,49 @@
 
         */
 
+        var a = 10;
+        function fun() {
+            var number = 10;
+            function fun2() {
+                console.log(a);
+            }
+            fun2()
+        }
+        // fun()
+        // 注:在大括号中,let声明的变量才会属于大括号的词法环境
+        // 如果用var声明的变量,会被挂载到全局词法环境中
+        {
+            let b = 10;
+            console.log(a);
+        }
+        /*
+            解释:
+                1. 在最开始,会先创建全局词法环境,像这样
+                globalLexicalEnvironment = {
+                    a:10,
+                    fun:<ref to fun function>,
+                    outer:null
+                }
+                2. 然后调用了fun函数,此时会创建一个新的词法环境
+                lexicalEnvironment  = {
+                    number:10,
+                    fun2:<ref to fun2 function>,
+                    outer: globalLexicalEnvironment
+                }
+                3. 遇到了fun2执行,又会创建一个新的词法环境
+                lexicalEnvironment2  = {
+                    outer: lexicalEnvironment
+                }
+                此时fun2访问a, 由于当前词法环境中并没有a这个变量,所以会通过outer向外层词法环境中寻找,直到在globalLexicalEnvironment找到a变量,输出
+                
+                4. 紧接着创建大括号的词法环境
+                blockLexicalEnvironment = {
+                    b:10,
+                    outer:globalLexicalEnvironment,
+                }
+                然后在块中访问了a,通过outer去查找a变量
 
-        let number = 42;
-        function printNumber() {
-            console.log(number);
-        }
-        function log() {
-            let number = 54;
-            printNumber();
-        }
-        // Prints 42
-        log();
+        */
     </script>
 </body>
 
