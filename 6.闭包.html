@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+            闭包: 简单来讲,是一个函数,
+                一个函数创建函数的作用域的连接,闭包'关闭'了函数的自由变量
+
+                一般情况下,函数中的变量在函数被执行完毕之后,会被js的垃圾回收机制回收
+                而如果在内层函数使用了外部函数的变量,并且js垃圾回收机制外部函数执行完毕之后回收
+                此时内部函数就不能访问到了
+                但事实是,内部函数能够访问到外部函数,就是因为闭包产生了,关闭了外层函数的被访问到的变量的垃圾回收机制
+
+                优点: 
+                    1. 延长了局部变量的生命周期
+                    2. 可用于创建私有变量
+                缺点:
+                    1.变量会驻留在内存中,如果没有及时清除,会造成内存损耗
+        */
+        // 例1:
+        // function fun() {
+        //     var a = 10;
+        //     return function () {
+        //         console.log(a);
+        //     }
+        // }
+        // var a = fun()
+        // a()
+        // a()
+
+        // 例2:
+        // 可以通过闭包解决var变量循环输出的问题
+        for (var i = 0; i < 4; i++) {
+            // 输出正常
+            // 因为这里形成了闭包
+            (function (i) {
+                // 外部函数
+                setTimeout(() => {
+                    // 内部函数
+                    // 内部函数使用了外部函数的变量,延长了局部变量的生命周期
+                    console.log(i);
+                }, 0)
+            })(i)
+        }
+
+    </script>
+</body>
+
+</html>
