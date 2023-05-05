@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+            什么是作用域?
+                Javascript中的作用域说的是变量的可访问性和可见性。
+                也就是说整个程序中哪些部分可以访问这个变量,或者说这个变量都在哪些地方可见。
+
+                在es6之前,js只有全局作用域和函数作用域
+                es6推出了let const用于声明块级作用域变量,
+        */
+
+        // function fun() {
+        //     var a = 10;
+        // }
+        // console.log(a); // 报错,a变量在函数中,函数执行完毕后局部变量会被销毁
+
+        // for (var i = 0; i < 10; i++) { }
+        // console.log(i); // 输出10,不在函数作用域中,就是在全局作用域中
+        // if (true) { var a = 10; }
+        // console.log(a); // 同理
+
+        /*
+        作用域链
+        当在Javascript中使用一个变量的时候,首先Javascript引擎会尝试在当前作用域下去寻找该变量.
+        如果没找到,再到它的上层作用域寻找,以此类推直到找到该变量或是已经到了全局作用域。
+
+        要想理解Javascript是如何进行变量查找的,必须要了解Javascript中词法环境这个概念
+
+        所谓词法环境就是一种标识符—变量映射的结构(这里的标识符指的是变量/函数的名字.变量是对实际对象[包含函数和数组类型的对象]或基础数据类型的引用)。
+        
+        简单地说，词法环境是Javascript引擎用来存储变量和对象引用的地方。
+
+        一个语法环境的示例
+        只有当该作用域的代码被执行的时候，引擎才会为那个作用域创建一个新的词法环境。词法环境还会记录所引用的外部词法环境(即外部作用域)。
+        例：
+        lexicalEnvironment = {
+            a: 25,
+            obj: <ref. to the object>
+            outer: <outer lexical environemt>
+        }
+        解释: 表示当前词法环境中, 
+                有a这个变量,值为25.
+                有 obj这个变量,值为一个引用数据
+                outer:用于记录当前作用域的上一层作用域
+        注: 最外层的词法环境是全局词法环境,全局词法环境没有上一层作用域了,它就是最外层,如果在全局词法环境中没有找到变量的话,会返回undefined
+
+            js在进行变量查找时候,会在当前的词法环境中进行查找,如果没有找到,就会根据词法环境的outer所记录的外层词法环境进行查找,直到全局词法环境
+
+        */
+
+
+        let number = 42;
+        function printNumber() {
+            console.log(number);
+        }
+        function log() {
+            let number = 54;
+            printNumber();
+        }
+        // Prints 42
+        log();
+    </script>
+</body>
+
+</html>
