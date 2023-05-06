@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+            方式一: es6的extends继承
+                在通过这种方式实现继承时,如果父类有构造函数,则子类必须使用super关键字
+        */
+        // class Person {
+        //     constructor(name) {
+        //         this.name = name
+        //     }
+        // }
+        // class Student {
+        //     constructor(name) {
+        //         super(name)
+        //     }
+        // }
+        /*
+            方式二: 原型链继承
+                缺点: 1.原型中包含的引用值会在所有实例之间共享,修改一个实例,另一个实例会跟着修改
+                      2.子类在实例化时,无法给父类传参
+        */
+        // function Person() {
+        //     this.name = '战士'
+        // }
+        // function Student() {
+        //     this.age = 18;
+        // }
+        // Student.prototype = new Person()
+        // let stu = new Student();
+        // console.log(stu.age, stu.name);
+
+        /*
+            方式三: 构造函数继承
+                优点: 实现简单,可以给父类传参
+                缺点: 只有在构造函数中定义的函数才能被子类调用,在原型上的无法调用,所以函数不能复用
+        */
+        // function Person() {
+        //     this.name = '战士'
+        // }
+        // // Person.prototype.fun = () => {
+        // //     console.log(this.name);
+        // // }
+        // function Student() {
+        //     Person.call(this)
+        //     this.age = 18;
+        // }
+        // let stu = new Student()
+        // console.log(stu.age, stu.name);
+        // // stu.fun()
+
+        /*
+            方式四: 组合式继承
+                优点: 解决了上面两种方式的缺点
+                缺点: 调用了两次父构造函数,导致子类实例和原型有两份相同的熟悉和方法
+        */
+        // function Person() {
+        //     this.name = '战士'
+        // }
+        // function Student() {
+        //     Person.call(this)
+        //     this.age = 18;
+        // }
+        // Student.prototype = new Person();
+        // let stu = new Student()
+
+        /*
+            方式五:原型式继承
+            通过Object.create()/ 手动创建一个新的构造函数 实现
+                缺点: 由于原型是子类实例共用的,当修改原型上的引用数据类型,会导致所有实例修改
+        */
+        // function Person() {
+        //     this.name = 'person'
+        //     this.fun = function () {
+        //         console.log(111);
+        //     }
+        // }
+        // function Student() {
+        //     this.age = 18
+        // }
+        // function object(o) {
+        //     function f() { }
+        //     f.prototype = o;
+        //     return new f();
+        // }
+        // let test1 = object(new Person())
+        // test1.age = 18
+        // console.log(test1);
+
+        /*
+            方式六: 寄生继承
+            与方式五类似,在方式五的基础上进行优化,添加一些方法
+                缺点: 与方式五一样
+        */
+        // function Person() {
+        //     this.name = 'person';
+        //     this.cards = ['信用卡-', '储蓄卡'];
+        // }
+        // function clone(o) {
+        //     let obj = Object.create(o);
+        //     obj.say = () => {
+        //         console.log(this);
+        //     }
+        //     return obj;
+        // }
+        // let test = clone(new Person())
+        // console.log(test);
+
+
+        /*
+            方式七:寄生组合继承
+        */
+        function clone(parent, child) {
+            // 这里改用 Object.create 就可以减少组合继承中多进行一次构造的过程
+            child.prototype = Object.create(parent.prototype);
+            child.prototype.constructor = child;
+        }
+
+        function Parent6() {
+            this.name = 'parent6';
+            this.play = [1, 2, 3];
+        }
+        Parent6.prototype.getName = function () {
+            return this.name;
+        }
+        function Child6() {
+            Parent6.call(this);
+            this.friends = 'child5';
+        }
+
+        clone(Parent6, Child6);
+
+        Child6.prototype.getFriends = function () {
+            return this.friends;
+        }
+    </script>
+</body>
+
+</html>
