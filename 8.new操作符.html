@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // new操作符都干了什么?
+        function newOperation(fn, name, age) {
+            // 1.创建一个新对象
+            let obj = {};
+            // 2.将新对象的对象原型 指向构造函数 的原型对象
+            obj.__proto__ = fn.prototype;
+            // 3.改变构造函数的this指向
+            let res = fn.call(obj, name, age);
+
+            // 4.判断构造函数返回的是否为对象,是这返回这个对象,否则返回新创建的对象
+            // 注意,需要用instanceof判断是否为对象,用typeof来判断对象的不仅仅只有对象,还有null
+            // return typeof res === "object" ? res : obj
+            return res instanceof Object ? res : obj
+        }
+        function Person(name, age) {
+            this.name = name;
+            this.age = age;
+            // return {}
+            // return null
+        }
+        let obj = newOperation(Person, '周杰伦', 18);
+        console.log(obj);
+
+    </script>
+</body>
+
+</html>
