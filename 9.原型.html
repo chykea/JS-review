@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 原型:用于对象共享属性和方法
+        function fun() {
+            // this.a = 11; // 第一个输出
+        }
+        // prototype在普通函数身上
+        // console.log(fun.prototype);
+        // __proto__在对象身上,它指向它的构造函数的原型对象
+        let obj = new fun()
+        // console.log(obj.__proto__);
+        // console.log(obj.__proto__ === fun.prototype);
+
+        // 原型链: 把原型串联起来就是原型链
+
+        // 对象查找属性的顺序
+        // 先到对象本身查找--> 对象的原型身上查找 --> 当前原型对象的原型上找 --> 直到原型为null,找不到属性就返回undefined
+        // fun.prototype.a = 123;  // 第二个输出
+        // Object.prototype.a = 456;  // 第三个输出
+        console.log(obj.a);
+
+
+    </script>
+</body>
+
+</html>
