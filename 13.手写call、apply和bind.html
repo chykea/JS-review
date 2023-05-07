@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // call
+        Function.prototype.myCall = function (target, ...args) {
+            const symobl = Symbol()
+            target[symobl] = this;
+            let res = target[symobl](...args); // 接收函数执行后返回的值
+            delete target[symobl];
+            return res
+        }
+        // let obj = { a: 1 }
+        // function fun(name, age) {
+        //     console.log(this.a, name, age);
+        //     // return this.a;
+        // }
+        // console.log(fun.myCall(obj, 'lisi', 18));
+
+        // apply
+        Function.prototype.myApply = function (target, args) {
+            const symobl = Symbol()
+            target[symobl] = this;
+            let res = target[symobl](...args);
+            delete target[symobl];
+            return res
+        }
+
+        // let obj = { a: 1 }
+        // function fun(name, age) {
+        //     console.log(this.a, name, age);
+        // }
+        // fun.myApply(obj, ['lihua', 18])
+
+        // bind(重点)
+        // 版本一:
+        // Function.prototype.myBind = function (target, ...outerArgs) {
+        //     const symbol = Symbol();
+        //     target[symbol] = this;
+        //     return function (...innerArgs) {
+        //         let res = target[symbol](...outerArgs, ...innerArgs)
+        //         return res;
+        //     }
+        // }
+        // 由于bind改变this指向后,会返回一个函数,而这个函数也可以通过new操作符来构建对象
+        // 在js的bind所返回的函数中,如果用它来创建一个实例,则原先绑定的this会被忽略
+        // 且创建的实例会绑定原构造函数的原型属性和构造属性
+
+        // 版本二: 改良后的bind
+        Function.prototype.myBind = function (target, ...outerArgs) {
+            const fn = this;
+            // 这个函数也可以通过new创建实例,所以要判断
+            let bound = function (...innerArgs) {
+
+                // 创建实例后,这里的this指向的就是被创建的实例
+                // true 为创建对象
+                // false 为改变this
+                // 所以这里才能进行判断
+
+                fn.apply(this.constructor === fn ? this : target, outerArgs.concat(innerArgs))
+            }
+            // 这一步肯定是比上面的声明函数要快的
+            // 如果没有这一步,上面判断是new操作还是函数调用操作就无法判断了
+            bound.prototype = fn.prototype; // 新返回的函数的原型其实与原函数的原型是一样的,所以这里要改
+            return bound;
+        }
+        let obj = {
+            a: 1
+        }
+        function fun(b, c) {
+            this.name = 'lisi';
+            console.log(this.a);
+            console.log(b);
+            console.log(c);
+        }
+
+
+
+        // 版本一:
+        // let bound = fun.myBind(obj, 2)
+        // let newObj = new bound(3)  // 1 2 3
+        // console.log(newObj); // {}
+
+        // 版本二
+        let bound = fun.myBind(obj, 2)
+        let newObj = new bound(3)  // undefined 2 3
+        console.log(newObj); // {name:'lisi'}
+
+        // let boundd = fun.myBind(obj, 4)
+        // boundd(5)
+
+        // js的bind
+        // let bound2 = fun.bind(obj, 2)
+        // let newObj2 = new bound2(3) // undefined 2 3
+        // console.log(newObj2); // {name:lisi}
+
+    </script>
+</body>
+
+</html>
