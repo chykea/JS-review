@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+            es5:
+                pop:末尾弹出数据
+                push:末尾添加数据
+                shift:头部弹出数据
+                unshift:头部添加数据
+                
+
+                slice: 截取数组[开始索引,结束索引)返回值是一个新数组,结果为(开始到结束索引-1)所在的数据组成的数组,不会影响原数组
+                splice: 截取数组[开始索引,结束索引],返回值是一个新数组,结果为(开始到结束索引)所在的数据组成的数组,会影响原数组
+                concat: 合并两个数组,不会合并共有的数据,返回新数组,不影响原数组
+                join:  把数组转为字符串,如果传入字符,会以该字符作为连接的数组字符串,不影响原数组
+                reverse: 翻转数组   
+                sort: 排序,参数接收一个函数,不传的话,数组默认按位排序,传入的函数返回 1(升序) / -1(降序) / 0(不变)
+                indexOf : 从左检查数组中是否存在该数值,有返回对应索引,没有返回-1
+                lastIndexOf : 从右检查数组中是否存在该数值,有返回对应索引,没有返回-1
+                
+            es6:
+                forEach: 遍历数组, return表示跳过本次循环,如果报错则结束循环
+                filter: 遍历数组, 过滤符合条件数据
+                some: 遍历数组, 找到一个符合条件的数据后返回true,否则返回false
+                every: 遍历数组, 找到一个不符合条件的数据后返回false,否则返回true
+                find:  遍历数组, 找出数组中符合条件的数据并返回该数据,否则返回undefined
+                findIndex: 遍历数组,找出数组中符合条件的第一个数据,并返回其索引
+                map:  遍历数组,返回一个新数组,数组值为map中函数的return值,结构与原数组类似
+
+                reduce: 语法: 数组名.reduce(function (prev,item,index,arr) {},初始值)
+                    prev: 一开始的值为初始值,当第一次运算有了结果后,该结果作为prev的值
+                    item: 数组的每一项
+                    index: 每一项的索引
+                    arr: 原数组
+
+                    该方法常用与二维数组拍平
+        */
+        let arr = [3, 5, 1, 7, 6, 4, 2]
+
+        // console.log(arr.splice(1, 5)); // 影响原数组
+        // console.log(arr.slice(1, 5)); // 不影响原数组
+        // console.log(arr);
+
+
+        // arr.sort((a, b) => {
+        //     console.log(a, b);
+        //     return b - a // 大于0升序,小于0降序,0不变
+        // })
+        // console.log(arr);
+        // 简易版sort方法
+        // Array.prototype.mySort = function (fn) {
+        //     if (typeof fn !== "function") return;
+        //     for (let i = 0; i < this.length; i++) {
+        //         for (let j = i + 1; j < this.length; j++) {
+        //             if (fn(this[i], this[j]) > 0) {
+        //                 let tmp = this[i];
+        //                 this[i] = this[j];
+        //                 this[j] = tmp;
+        //             }
+        //         }
+        //     }
+        // }
+        // arr.mySort((a, b) => { return b - a })
+
+        // let arr1 = ['a', 'b', 'c']
+        // let arr2 = ['a', 'd', 'f']
+        // let arr3 = arr1.concat(arr2)
+        // console.log(arr3);
+
+        // let res = arr.join()
+        // console.log(arr);
+        // console.log(res);
+        // arr.forEach(item => {
+        //     console.log(item);
+        //     // if (item === 4) {
+        //     //     // 可以通过抛出异常来结束循环
+        //     //     throw new Error('结束循环')
+        //     // }
+
+        //     // 在这里写break会在编译时就报错了,不会输出
+        //     // break;
+
+        //     // return // 结束本次循环
+        //     // console.log(item + 1);
+        // })
+        // console.log(arr.find(item => { return item === 0 }));
+
+        // let res = arr.reduce((prev, item, index, arr) => {
+        //     // console.log(item);
+        //     return prev * item
+        // }, 1)
+        // console.log(res);
+
+        // let arr2 = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+        // let res = arr2.reduce(function (prev, item) {
+        //     return prev.concat(item)
+        // }, [])
+        // console.log(res);
+    </script>
+</body>
+
+</html>
