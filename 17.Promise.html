@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 手写一个Promise
+        const enums = {
+            PENDING: "PENDING",
+            FUIFILLED: "FUIFILLED",
+            REJECTED: "REJECTED"
+        }
+        // 1.构造函数Promise
+        function MyPromise(executor) {
+            var self = this;
+            self.status = enums.PENDING;
+            // 3.2  添加回调函数队列
+            self.onFuifilledCallBack = []
+            self.onRejectedCallBack = []
+            function resovle(value) {
+                if (self.status === enums.PENDING) {
+                    self.status = enums.FUIFILLED;
+                    self.value = value
+
+                    // 3.3 查看回调函数队列中是否为空,不为空弹出执行
+                    // 注: then是同步调用,而then中的函数是会被推到微任务队列中执行
+                    queueMicrotask(() => {
+                        self.onFuifilledCallBack.forEach(cb => cb(self.value))
+                    })
+                }
+            }
+            function reject(reason) {
+                if (self.status === enums.PENDING) {
+                    self.status = enums.REJECTED;
+                    self.reason = reason;
+
+                    // 3.3 查看回调函数队列中是否为空,不为空弹出执行
+                    queueMicrotask(() => {
+                        self.onRejectedCallBack.forEach(cb => cb(self.reason))
+                    })
+                }
+            }
+            try {
+                executor(resovle, reject)
+            } catch (e) {
+                reject(e)
+            }
+        }
+        // 2.then调用
+        MyPromise.prototype.then = function (onFuifilled, onRejected) {
+            onFuifilled = typeof onFuifilled === "function" ? onFuifilled : value => value
+            onRejected = typeof onRejected === "function" ? onRejected : reason => reason
+
+            var self = this;
+
+            // 4. 链式调用
+            // 4.1 即then执行后返回的又是一个Promise
+            return new MyPromise((resovle, reject) => {
+                if (self.status === enums.FUIFILLED) {
+                    // 3.1 onFuifilled(self.value)
+                    queueMicrotask(() => {
+                        handle(onFuifilled)
+                    })
+                } else if (self.status === enums.REJECTED) {
+                    queueMicrotask(() => {
+                        handle(onRejected)
+                    })
+                    // 3.1 onRejected(self.reason)
+                } else {
+                    // 3.1 resolve或reject被其他异步任务包裹时(如定时器)
+                    // 而此时调用then时,resolve/reject还没有调用,状态没有改变,所以此时为pending
+                    // 此时需要添加两个数组,用于存储成功和失败的回调函数
+                    self.onFuifilledCallBack.push((value) => {
+                        handle(onFuifilled)
+                    })
+                    self.onRejectedCallBack.push((reason) => {
+                        handle(onRejected)
+                    })
+                    // self.onFuifilledCallBack.push(onFuifilled);
+                    // self.onRejectedCallBack.push(onRejected);
+                }
+
+                // 4.处理onFuifilled和onRejected的执行结果
+                function handle(callback) {
+                    try {
+                        const res = callback(self.value)
+                        if (res instanceof MyPromise) {
+                            res.then(resovle, reject)
+                        } else {
+                            resovle(res)
+                        }
+                    } catch (e) {
+                        reject(e)
+                    }
+                }
+
+            })
+
+        }
+        let my = new MyPromise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(1)
+            }, 1000)
+            // reject('err')
+        })
+        // console.log(my);
+        my.then(res => {
+            console.log(res); // 1
+            // return new MyPromise((resolve, reject) => {
+            //     resolve(2)
+            // })
+
+            // return my
+        }, reason => {
+            // console.log(reason);
+        }).then(res => {
+            // console.log(res); // 当上一个then返回的不是Promise时,这里接收到是undefined
+            // 如果返回的是MyPromise,就会接收到resolve的值
+        })
+
+    </script>
+</body>
+
+</html>
