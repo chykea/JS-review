@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+            前面已经讲到js为什么是单线程,
+            这里就讲讲事件循环的概念,
+                由于js是单线程的,所以js代码的执行顺序是从上往下执行的,
+                如果在这个执行过程中,遇到了比较耗时的操作,比如网络请求,比如定时器,比如回调函数,比如promise,比如generator
+                js如果同步执行这些代码的话,所花费的事件可能会很长,那后面的代码就会被阻塞,页面的加载时间就会很长
+                所以 js设计了一个任务队列,这个队列专门存放这些耗时任务,让这些耗时的代码在这里去执行,然后js主线程继续往下执行
+                代码,这个过程中任务队列的事件不会影响js主线程,
+                等到js中的同步代码执行完毕之后,js会去这个任务队列中,找出已经执行完成的任务,并执行它们的回调函数,
+                执行完成之后继续去任务队列中找,这个过程会循环,直到任务队列没有任务,这个过程就是事件循环
+        */
+    </script>
+</body>
+
+</html>

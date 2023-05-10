@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+            谈这个问题之前,需要了解js为什么是单线程的,
+            js的单线程,主要与它的用途有关,js作为浏览器的脚本语言,主要的用途就是用来与用户交互,以及操作dom
+            而操作dom就绝对了js是单线程的,如果js是多线程的话,多个线程对一个dom节点进行修改或删除,浏览器不知道以哪个线程
+            的操作为主,所以为了避免复杂性,js被设计为单线程
+
+            但现在为了能够利用多核cpu的计算能力,js推出了web worker,即允许js创建多个线程,
+            但这些创建出来的线程,不能操作dom,完全受js主线程控制,所以这个标准并没改变js单线程的本质
+        */
+       // web worker
+
+    </script>
+</body>
+
+</html>
