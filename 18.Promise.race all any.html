@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // Promise.race工作原理
+        // 接收一个Promise数组,返回第一个成功/失败结果的Promise
+        function race(promiseList) {
+            if (typeof promiseList.forEach === "undefined") return new Error('not iterable')
+            // race最终返回的是一个Promise,只要有一个状态是 fuifill/rejected,就会返回结果的Promise
+            // 如果有一个Promise状态为rejected,则新Promise的结果为状态为rejected的Promise的结果
+            return new Promise((resolve, reject) => {
+
+                // 在创建这个新的Promise对象时,状态为Pending,
+                promiseList.forEach(item => {
+                    // 处理每一项,当有一项为resolve时,这个新的Promise的状态就被第一个resolve给改变了,值也为第一个
+                    // 之后不管哪个resolve,也无法改变这个新Promise的状态了
+                    // console.log(Promise.resolve(item));
+                    Promise.resolve(item).then(resolve, reject)
+                })
+            })
+        }
+        let p1 = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                // reject('2秒后执行失败')
+                resolve('2秒后执行')
+            }, 2000)
+        })
+        let p2 = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve('4秒后执行')
+            }, 4000)
+        })
+        race([p1, p2]).then(res => {
+            console.log(res);
+        }).catch(reason => {
+            console.log(reason);
+        })
+
+        // Promise.race应用
+        // 超时请求取消
+        const timeout = new Promise((resolve, reject) => {
+            // 三秒后取消请求
+            setTimeout(() => {
+                reject('请求超时')
+            }, 3000)
+        })
+        const fetchPromise = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve('请求成功')
+            }, 6000)
+        })
+        race([fetchPromise, timeout]).then(res => {
+            console.log(res);
+        }).catch(reason => {
+            console.log(reason);
+        })
+
+        // Promise.all
+        /*
+            工作原理:
+                参数:接收一组Promise
+                返回结果: Promise对象,成功的结果是所有fuifilled的结果组成的数组,失败的结果是那个rejected的Promise
+        */
+        function all(promiseList) {
+            return new Promise((resolve, reject) => {
+                if (!Array.isArray(promiseList)) { // 判断参数是否为数组
+                    return new TypeError('argument must be Array');
+                }
+                // 记录已经fuifilled的Promise
+                let count = 0;
+                // 存放fuifilled的结果
+                let res = [];
+                for (let i = 0; i < promiseList.length; i++) {
+                    // 注: 由于promiseList中都是都为异步执行
+                    // 所以在执行时 它们之间是不会互相阻塞的,有的执行的快有的执行的慢
+                    // 而在执行过程中,每个promise在数组中的索引都是对应的
+                    // 所以在执行完成后,可以通过对应的索引将 执行结果放到数组中,就保证了执行结果的顺序与原promiseList数组的顺序时一致的
+                    Promise.resolve(promiseList[i]).then(value => {
+                        count++; // 成功 count++
+                        res[i] = value; // res[i] 按照顺序存放对应结果
+                        // 如果所有Promise执行完毕,调用resolve,并把所有fuifilled数组传入
+                        if (count == promiseList.length) {
+                            return resolve(res);
+                        }
+                    }).catch(reason => {
+                        // 只要promiseList中一个调用reject,就会把reject的结果传入并调用
+                        return reject(reason)
+                    })
+                }
+            })
+        }
+
+        let p3 = new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                resolve(1)
+            }, 4000)
+        })
+
+        let p4 = new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                resolve(2)
+            }, 2000)
+        })
+        let p5 = new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                resolve(3)
+                // reject('fall')
+            }, 3000)
+        })
+        all([p3, p4, p5]).then(res => {
+            console.log(res);
+        }).catch(reason => {
+            console.log(reason);
+        })
+
+        // Promise.any
+        /*
+            工作原理: 与Promise.all,Promise.all只要有一个为rejected就返回
+                而Promise.any与它相反,只要有一个为fuifilled就返回,如果是reject会放到数组中
+        */
+        function any(promiseList) {
+            if (!Array.isArray(promiseList)) return new TypeError('argument must be Array')
+            return new Promise((resolve, reject) => {
+                let len = promiseList.length;
+                let errs = [];
+                for (let i = 0; i < promiseList.length; i++) {
+                    promiseList[i].then(value => {
+                        resolve(value)
+                    }, err => {
+                        len--;
+                        errs.push(err);
+                        if (len == 0) {
+                            // AggregateError一般用于一组失败的结果
+                            reject(new AggregateError(errs));
+                        }
+                    })
+                }
+            })
+        }
+
+        let p6 = new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                reject(1)
+            }, 4000)
+        })
+
+        let p7 = new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                reject(2)
+            }, 2000)
+        })
+        let p8 = new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                // reject(3)
+                resolve(5)
+            }, 3000)
+        })
+        any([p6, p7, p8]).then(res => {
+            console.log(res);
+        }).catch(err => {
+            console.log(err);
+        })
+    </script>
+</body>
+
+</html>
