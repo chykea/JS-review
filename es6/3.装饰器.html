@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const Foo = {
+            say() {
+                console.log('hello man');
+            }
+        }
+        @mixins(Foo)
+        class Demo {
+            constructor() {
+
+            }
+        }
+
+        // 将其他对象合并到实例的原型身上
+        function mixins(...list) {
+            return function (target) {
+                Object.assign(target.prototype, ...list)
+            }
+        }
+        console.log(new Demo());
+
+    </script>
+</body>
+
+</html>
