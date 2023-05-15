@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+            指路:浏览器渲染过程
+                
+            重排与重绘是页面渲染的两个过程
+                重排(reflow): 根据Render Tree确定元素的布局信息(元素的尺寸,位置)
+                重绘(paint): 根据Render Tree生成元素的像素信息(元素的像素点,像素的颜色等)
+            
+            当元素的布局信息发生变化时,会导致重排,此时会重新计算布局信息
+            当元素的像素信息发生变化时,会导致重绘,此时并不会计算布局信息,而是重新确定像素信息
+
+            在页面的渲染过程中, 会先计算布局信息之后,再确定像素信息
+            所以, 重排一定会触发重绘
+                而重绘不一定会触发重排
+                重排会降低页面的渲染效率,应尽量避免
+
+            为了避免多次的重排 
+                1. 可以将多次的修改布局信息合并为一次
+                2. 避免直接获取元素的尺寸和位置(因为在获取的时候,浏览器要保证获取到的是最新的值,此时就会去进行重排,以更新最新的值),可以通过变量来存储布局信息
+
+        */
+    </script>
+</body>
+
+</html>
