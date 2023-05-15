@@ -10,7 +10,7 @@
 
 <body>
     <input type="text" id="model">
-    <span></span>
+    <span id="show"></span>
     <script>
         let obj = {
             data: 'data原始数据',
@@ -47,7 +47,8 @@
                 set(newVal) {
                     if (newVal === val) return
                     console.log("执行更新视图操作");
-                    dep.notify()
+                    // model.value = newVal
+                    dep.notify(newVal)
                 }
             })
         }
@@ -69,19 +70,21 @@
                 }
             }
             // 通知所有watcher对象更新视图
-            notify() {
+            notify(val) {
                 this.sub.forEach(item => {
-                    item.update()
+                    item.update(val)
                 })
             }
         }
         // 
         class Watcher {
             constructor() {
+                console.log(this);
                 Dep.target = this;
             }
-            update() {
+            update(val) {
                 console.log('更新视图');
+                show.innerText = val
             }
             addDep(dep) {
                 dep.addSub(this)
@@ -105,6 +108,7 @@
                 age: 18
             }
         })
+        let show = document.getElementById('show')
     </script>
 </body>
 
