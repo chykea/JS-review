@@ -12,22 +12,27 @@
     <script>
         /*
             共同点: 都可以在客户端存放数据
-            区别: 1. 数据存放的有效期
+            区别: 1.数据存放的有效期
                     sessionStorage: 仅在当前浏览器窗口关闭之前有效
                     localStorage: 只要不移除,一直有效
                     cookies: 一般服务端设置最大有效期,在过期时间之前有效
-                  2. localStorage和sessionStorage不能设置过期时间
-                     cookies可以设置
-                  3. 存储大小的限制
-                     cookies: 不能超过4k
-                     localStrorage、sessionStorage不能超过5M(浏览器不同存储大小可能不同)
-                  
-                     cookies需要线上环境,而其他两个没有限制
+                  2.作用域
+                    cookies在所有的同源窗口中都是共享的
+                    localStorage在所有同源窗口中共享(不同浏览器并不共享)
+                    sessionStorage在同一个窗口中是共享的
+                  3.存储大小的限制
+                    cookies: 不能超过4k
+                    localStrorage、sessionStorage不能超过5M(浏览器不同存储大小可能不同)
+                  4.通信
+                    cookies需要线上环境,而其他两个没有限制
+                    cookies在服务端和客户端来回传递,如果数据过多会导致性能问题
+                    localStrorage和sessionStorage在客户端中保存,不参与通信
+
                     
 
         */
 
-        document.cookie = 'name=789'
+        // document.cookie = 'name=789'
     </script>
 </body>
 
