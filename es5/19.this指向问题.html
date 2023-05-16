@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=s, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 1. 在全局作用域,this指向window
+        // console.log(this);
+
+        // 2.在普通函数中,谁调用就指向谁,与如何定义无关
+        // 当然也可以通过 call/apply/bind 改变普通函数的this指向
+        var obj = {
+            f1() {
+                console.log(this);
+            },
+            f2() {
+                // console.log(this); obj
+                fn3() // 相当于 window.fn3()
+
+                // function f4() {
+                //     console.log(this);
+                // }
+                // console.log(window);
+                // 在没有通过指定的调用,一般默认都为window调用
+                // f4() === window.fn4()
+
+            }
+        }
+        function fn3() {
+            console.log(this);
+        }
+        // 通过obj调用fn1 fn1的this指向obj
+        // obj.f1()
+        // 在fn2中的this是指向obj的,但fn3不是
+        // obj.f2()
+
+        // 3. 箭头函数的this
+        // 由于箭头函数的this只取决于它所在的上下文中的this,它的this不会被修改
+
+        function f4() {
+            // 函数中的this,是谁调用函数就指向谁
+            const test = () => {
+                console.log(this);
+            }
+            test.apply(window) // 监听函数的this不会因为被call/apply/bind修改而改变
+        }
+        // f4.call(obj) // 由于这里把f4的this指向obj, 所以f4里的箭头函数的this也指向obj
+        // f4() // window
+
+        // 4.事件绑定, 比如按钮绑定一个事件,它的回调函数中的this就指向这个按钮
+        // 5.定时器,指向window
+
+        // 6.构造函数中的this
+        function Person(name) {
+            this.name = name;
+            console.log(this); // 指向实例对象
+        }
+        // let p = new Person('abc')
+        // console.log(p);
+    </script>
+</body>
+
+</html>
