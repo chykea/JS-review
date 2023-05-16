@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 浅拷贝, 基本数据类型拷贝值,引用数据类型拷贝地址
+        function cloneShallow(obj) {
+            let newObj = {};
+            Object.keys(obj).forEach(item => {
+                newObj[item] = obj[item];
+            })
+            return newObj;
+        }
+        let obj = {
+            a: 1,
+            b: '123',
+            c: false,
+            d: [1, 2, 3],
+            e: { f: 666, g: [[4], { h: 5 }, 6] }
+        }
+        let newObj = cloneShallow(obj)
+        // console.log(newObj);
+        // obj.d[0] = 4
+
+        // 深拷贝  方式一: 自定义方法
+        function deepClone(obj) {
+            if (typeof obj !== 'object') return;
+            let newObj = {};
+            Object.keys(obj).forEach(item => {
+                if (obj[item] instanceof Array) { // 如果是数组
+                    // 数组的拷贝方法(数组中的元素都为基本数据类型)
+                    // newObj[item] = [].concat(obj[item])
+                    // newObj[item] = [...obj[item]]
+                    // newObj[item] = Array.from(obj[item])
+
+                    // 
+                    newObj[item] = obj[item].map(item => {
+                        if (item instanceof Array) {
+                            return [].concat(item)
+                        } else if (item instanceof Object) {
+                            return deepClone(item)
+                        } else {
+                            return item
+                        }
+                    })
+
+                } else if (obj[item] instanceof Object) { // 对象,递归调用即可
+                    newObj[item] = deepClone(obj[item]);
+                } else {
+                    newObj[item] = obj[item];
+                }
+            })
+            return newObj;
+        }
+
+        let newObj2 = deepClone(obj)
+        // obj.d[0] = 5
+        obj.e.g[0][0] = 7
+        obj.e.g[1].h = 8
+        console.log(obj);
+        console.log(newObj2);
+        // 方式二,JSON.parse(JSON.stringify(obj))
+        // let newObj3 = JSON.parse(JSON.stringify(obj))
+        // obj.d[0] = 5
+        // obj.e.g[0] = 7
+        // console.log(obj);
+        // console.log(newObj3);
+    </script>
+</body>
+
+</html>
