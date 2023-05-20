@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        Array.prototype.fakeFlat = function (num = 1) {
+            if (!Number(num) || Number(num) < 0) {
+                return this;
+            }
+            let arr = this.concat();
+            while (num > 0) {
+                if (arr.some(item => Array.isArray(item))) {
+                    arr = [].concat.apply([], arr)
+                } else {
+                    break
+                }
+                num--;
+            }
+            return arr;
+        }
+        const arr = [1, 2, [3, 4], [5, [6, 7]]];
+        // 
+        let newArr = arr.fakeFlat(Infinity) // Infinity 无论有多少层数组,都拍为一维数组
+        console.log(newArr);
+    </script>
+</body>
+
+</html>
