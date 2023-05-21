@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+            es6的class可以看做是一个语法糖,在es5中可以实现大部分功能
+            一些差异:
+                class中的方法都定义在prototype上
+                定义方法的时候可以不用function关键字来定义方法了, 可以直接把函数定义写进去就可以了
+                es5的构造函数可以当做普通函数调用,而class类必须通过new关键字来调用
+                在class类中,默认开启严格模式,
+
+
+                constructor是class类的默认方法,在通过new时,如果没有显示定义的话,空的constructor会被调用
+                constructor默认返回实例对象(this),
+
+                static关键字,被static修饰的属性,不会被实例继承,只能通过类名调用
+                extends关键字,用于继承父类,如果继承了父类,子类需要在constructor中显式调用super关键字(无论父类constructor是否需要传参)
+
+
+        */
+        // class Peson {
+        //     constructor() {
+        //         this.name = '123'
+
+        //     }
+        // }
+        // class A extends Peson {
+        //     constructor() {
+        //         super()
+        //         this.age = 18
+        //     }
+        // }
+        // let a = new A()
+        // console.log(a);
+    </script>
+</body>
+
+</html>

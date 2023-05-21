@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+            Generator: 一种普通函数,结合yield关键字使用,可以用于暂停函数,通过next恢复函数的运行
+                返回值是一个iterator遍历器,通过调用遍历器的next方法来获取yield返回的值
+        */
+        function* test() {
+            for (let i = 0; i < 5; i++) {
+                yield i;
+            }
+        }
+        // const iter = test()
+        // let i = iter.next()
+
+        function* test2(num) {
+            // 当第一次调用next时,会把1返回出去,第一次调用的next所传的参数不会被接收,当调用next之后,next所传的参数会被x所接收,这里x = 2,
+            let x = yield 1
+            console.log(x); // 2
+            let y = yield 1 + x
+            console.log(y); // 3
+            let z = yield 1 + y
+            console.log(z); // 4
+            return z
+        }
+        const iter = test2()
+        let i = iter.next(1)// value : 1
+        console.log(i);
+        let j = iter.next(2) // value : 3
+        console.log(j);
+        let k = iter.next(3) // value: 4
+        console.log(k);
+        let l = iter.next(4) // value: 4
+        console.log(l);
+
+    </script>
+</body>
+
+</html>

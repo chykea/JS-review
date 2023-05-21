@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+            es6新增了模块化import和export
+            import和export会被js引擎静态解析,即在编译时处理
+            if(x==2){
+                import './test.js'
+            }
+            在这段代码中,由于import是在编译时进行处理,而if语句是在运行时处理,所以import写在这里并没有意义,会报语法错误
+            即import和export只能在模块顶层,不能在代码块中
+
+            因此import不能进行动态加载模块,这是和require的一个区别
+            所以es2020提出一个import()函数,支持动态加载模块,异步执行,返回的是一个Promise
+
+
+
+            CommonJs和Esmoduled的区别   
+                1. CommonJs模块输出的是值的拷贝,Esmodule输出的是值的引用
+                2. CommonJs模块是运行是加载,Esmodule是编译时输出接口
+                3. CommonJs模块的require()是同步加载,Esmodule的import()是异步加载
+
+
+        */
+    </script>
+</body>
+
+</html>
