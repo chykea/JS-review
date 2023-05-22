@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+            symbol: es6推出的一个基本数据类型
+            通过 Symbol()方法创建一个symbol值,不需要用new来创建 
+        */
+        // 
+        const s = Symbol()
+        // 即使传入相同的值,得到的symbol也是不一样的
+        const s1 = Symbol('abc')
+        const s2 = Symbol('abc')
+        console.log(s1 === s2); // false
+        // 可以使用Symbol.for来查看上下文中是否存在该方法,并且传入的参数是否一致,有就返回存在的值,没有就返回一个新创建的值
+        const s3 = Symbol.for('abc')
+        const s4 = Symbol.for('abc')
+        console.log(s3 === s4); // true
+        // Symbol.keyFor() 用于返回创建symbol时所传入的key
+        const key = Symbol.keyFor(s3)
+        console.log(key); // 'abc'
+
+        // 用途: 当一个复杂的对象中,要新增一个属性或方法,很容易就把原来的属性给覆盖掉,利用symbol可以避免
+        const name = Symbol('name')
+        const obj = {
+            [name]: '123'
+        }
+        // 需要通过Object.getPrototypeSymbol() 来获取Symbol属性,然后通过obj[key]来获取
+        console.log(obj[Object.getOwnPropertySymbols(obj)[0]]);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+            es6新增的Proxy代理对象,用于拦截js对象的操作行为
+            注: 只有对代理对象的基本操作才会被拦截,被代理的对象的操作行为不会被拦截
+        */
+        let p = new Proxy({ name: 'abc', age: 18 }, {
+            // 拦截属性被获取的行为
+            get(target, key, receiver) {
+                console.log('获取被拦截了');
+                console.log(target, key);
+                // 返回属性被获取时的值
+                return
+            },
+            // 拦截属性被设置的操作
+            set(target, key, receiver) {
+
+            }
+        })
+        // 定义一个可以被取消代理的Proxy
+        // 通过Proxy.revocable定义,返回的是一个对象,这个对象中包含了代理对象和取消代理的方法
+        // 当revoke方法执行之后,再访问Proxy实例时会抛出错误
+        // 通常receiver是代理对象本身
+        let { proxy: p1, revoke } = Proxy.revocable({ nikcname: 'nige', age: 20 }, {
+            get(target, key, receiver) {
+                // console.log(target, key);
+                // console.log(receiver);
+                console.log('被拦截了');
+                return receiver
+            }
+        });
+        // 当有对象继承代理对象时,receiver指向被继承的对象
+        let child = Object.create(p1)
+
+
+        // let obj = {
+        //     say() {
+        //         console.log(this);
+        //         console.log(this === p2);
+        //     }
+        // }
+        // let p2 = new Proxy(obj, {})
+        // obj.say() // false
+        // p2.say() // true
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+            es6的解构赋值   
+        */
+        // 数组解构
+        let [a1, a2, a3] = [1, 2, 3] //a1 = 1,a2 = 2,a3 = 3,按照顺序进行赋值,
+        // let [a1, a3] = [1, 2, 3] // a1 = 1,a3 = 2, 右边数组的3会被丢弃
+        // 对象解构
+        let { name } = { name: '12346', age: 5 } // name:'12346',age会被丢弃
+        let { nickname = 'fbl' } = { nickname: 'abc', age: 123 } // nickname='abc',如果右边对象没有对应属性,nickname为'fbl'
+    </script>
+</body>
+
+</html>

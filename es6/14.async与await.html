@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+            async与await是es7推出的
+
+            async用于定义一个 异步函数,与普通函数不同
+            异步函数的返回值一定是一个 Promise对象,
+
+        */
+        // async function test() {
+        //     return
+        // }
+        // const p = test()
+        // console.log(p);
+
+        /*
+            所以异步函数可以返回Promise对象,或thenable
+
+            thenable: 指任何拥有then方法的对象或函数
+            判断p是否是函数或对象，并且是否有then()方法，满足这些条件，我们将它认定为thenable
+        */
+        // async function test2() {
+        //     return {
+        //         then(reslove) {
+        //             reslove('test2返回值')
+        //         }
+        //     }
+        // }
+        // const p2 = test2()
+        // console.log(p2);
+        // p2.then(res => console.log(res))
+
+        /*
+            await 只能在async修饰的函数中使用
+        */
+        async function test3() {
+            console.log(1);
+            // 使用await时,处于await后面的语句会被阻塞(await所修饰语句后面的语句会被放到微任务队列中)
+            // 有点像generator函数,不过generator函数是通过外部调用next恢复执行的,而await是等外面的同步任务执行完(同步任务执行完就会看微任务队列)就会自动恢复执行
+            // async与await的底层可以通过generator实现
+            const res = await Promise.resolve(1);
+            console.log(2);
+            const res2 = await Promise.resolve(2);
+            console.log(4);
+        }
+        test3()
+        console.log(3);  // 这段代码的输出结果为 1 3 2 5 4
+        Promise.resolve(5).then(res => console.log(res))
+
+        /*
+            优缺点:
+                async/await无法处理reject情况,需要包裹try..catch,如果await后面的Promise的status是rejected,那么在await后面的语句是不会执行的(没有try..catch的情况下),
+                try..catch里面的值无法传给下一个try..catch
+        */
+    </script>
+</body>
+
+</html>
