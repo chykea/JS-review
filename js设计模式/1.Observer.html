@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 观察者模式
+        // 被观察者
+        class Subject {
+            constructor(observers = []) {
+                // 用一个列表存储观察者，但状态改变时，通知观察者进行更新
+                this.observers = observers
+            }
+
+            addObserver(observer) {
+                this.observers.push(observer)
+            }
+            removeObserver(obserser) {
+                const index = this.observers.findIndex(o => obserser.name === o.name)
+                this.observers.splice(index, 1);
+            }
+            notify() {
+                this.observers.forEach(observer => observer.update())
+            }
+        }
+        // 观察者
+        class Observer {
+            constructor(name, subject) {
+                this.name = name; // 需要作为移除依据
+                if (subject) {
+                    subject.addObserver(this)
+                }
+            }
+            update() {
+                console.log(`this obserser is update`);
+            }
+        }
+    </script>
+</body>
+
+</html>
