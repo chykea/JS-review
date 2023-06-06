@@ -168,6 +168,37 @@
         }).catch(err => {
             console.log(err);
         })
+
+        // Promise.allSettled
+        // 与Promise.all相比,all会处理所有的Promise对象，但如果有一个rejected，就会结束，所以结果要么是数组，要么是rejected的Promise
+        // Promise.allSettled只会返回一个数组，不管Promise的状态结果是fuifilled还是rejected，都会被放到数组中
+        // 元素的格式是这样的 成功的结果: {status:'fuifilled',value} 失败的结果: {status:'rejected',reason}
+        function allSettled(promiselist) {
+            if (!Array.isArray(promiselist)) return
+            return new Promise(resolve => {
+                let data = [], len = promiselist.length;
+                let count = len
+                for (let i = 0; i < len; i++) {
+                    const promise = promiselist[i];
+                    promise.then(res => {
+                        data[i] = { status: 'fuifilled', value: res }
+                    }).catch(err => {
+                        data[i] = { status: 'rejected', reason: err }
+                    }).finally(() => {
+                        if (!--count) {
+                            resolve(data)
+                        }
+                    })
+                }
+            })
+        }
+        // allSettled([p6, p7, p8]).then(res => {
+        //     console.log(res);
+        // })
+        Promise.allSettled([p6, p7, p8]).then(res => {
+            console.log(1);
+            console.log(res);
+        })
     </script>
 </body>
 
