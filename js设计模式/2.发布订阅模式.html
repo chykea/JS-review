@@ -9,7 +9,76 @@
 </head>
 
 <body>
+    <script>
+        // 报亭
+        class PubSub {
+            constructor() {
+                this.event = {}
+            }
+            /**
+             * @param type {any} 相当于指定订阅的杂志,
+             * @param cb {Function} 如果该杂志更新报亭要怎么做
+            */
+            // 订阅
+            // 为什么订阅这个操作是在报亭这里呢？
+            // 读者要订阅某个杂志，只有报亭知道读者订阅了，才会当杂志更新时通知读者
+            // 如果订阅这个操作是在读者身上，就相当于自己口头说要订阅，但报亭并不知道，也就不会通知读者
+            subscribe(type, cb) {
+                // 订阅所携带的操作必定是一个函数
+                cb = typeof cb === "function" ? cb : (cb) => cb
+                // 没有对应的杂志时
+                if (!this.event[type]) {
+                    // 添加当前杂志
+                    this.event[type] = []
+                }
+                // 并且当前杂志更新时要怎么做
+                this.event[type].push(cb)
+            }
+            // 对应的杂志发布时
+            publish(type, ...args) {
+                // 如果当前有人订阅该杂志
+                if (this.event[type]) {
+                    // 执行更新时添加的操作方法,
+                    this.event[type].forEach(cb => cb(...args));
+                }
+            }
+            // 取消对应杂志订阅时要执行的操作方法
+            unsubscribe(type, cb) {
+                if (this.event[type]) {
+                    const index = this.event[type].findIndex(item => item === cb)
+                    this.event[type].splice(index, 1)
+                }
+                // 如果对应的杂志没有要执行的操作时,即没有人要订阅了
+                // 删除该杂志
+                if (this.event[type].length) {
+                    delete this.event[type]
+                }
+            }
+            // 取消对应杂志订阅时要执行的所有操作方法
+            unsubscribeAll(type) {
+                if (this.event[type]) {
+                    delete this.event[type]
+                }
+            }
+        }
 
+        // 创建一个报亭
+        let pubsub = new PubSub();
+        // 读者1 订阅了杂志1
+        pubsub.subscribe('杂志1', function (message) {
+            console.log('杂志1更新了');
+            console.log('杂志1附带的东西', message);
+        })
+        // 读者2 订阅了杂志2
+        pubsub.subscribe('杂志2', function (message) {
+            console.log('杂志2更新了');
+            console.log('杂志2附带的东西', message);
+        })
+        // 有新来的杂志来到报亭的仓库
+        // 仓库把杂志送到报亭中，这个过程就相当于发布。
+        // 报亭收到了杂志，就自动去执行对应杂志的操作
+        pubsub.publish('杂志1', '杂志1所携带的点卡')
+    </script>
 </body>
 
 </html>
