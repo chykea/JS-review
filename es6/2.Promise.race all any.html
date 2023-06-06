@@ -23,7 +23,7 @@
                     // 处理每一项,当有一项为resolve时,这个新的Promise的状态就被第一个resolve给改变了,值也为第一个
                     // 之后不管哪个resolve,也无法改变这个新Promise的状态了
                     // console.log(Promise.resolve(item));
-                    Promise.resolve(item).then(resolve, reject)
+                    Promise.resolve(item).then(resolve, reject) // 第一个成功的Promise会执行这个新创建的Promise状态
                 })
             })
         }

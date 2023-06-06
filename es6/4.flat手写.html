@@ -14,14 +14,15 @@
             if (!Number(num) || Number(num) < 0) {
                 return this;
             }
+            // 拍平数组次数
             let arr = this.concat();
             while (num > 0) {
-                if (arr.some(item => Array.isArray(item))) {
-                    arr = [].concat.apply([], arr)
+                if (arr.some(item => Array.isArray(item))) { // 判断数组里面是否有数组嵌套
+                    arr = [].concat.apply([], arr) // 有就合并
                 } else {
                     break
                 }
-                num--;
+                num--; // 
             }
             return arr;
         }
